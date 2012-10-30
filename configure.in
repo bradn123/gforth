@@ -628,7 +628,7 @@ AC_MSG_RESULT($M4)
 AC_MSG_CHECKING([for gforth])
 GFORTH="`cd / && which gforth 2>/dev/null`"
 #the "$srcdir" = "." test defends agains the "../" bug in gforth-0.6.2
-(cd / && $GFORTH -e bye >/dev/null 2>/dev/null  && test "$srcdir" = ".") || GFORTH=""
+#(cd / && $GFORTH -e bye >/dev/null 2>/dev/null  && test "$srcdir" = ".") || GFORTH=""
 if test -z "$GFORTH"; then
   PREFORTH='echo "You need to configure with a gforth in \$PATH to build this part" && false'
   kernel_anti_dependence=''
