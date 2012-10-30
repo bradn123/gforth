@@ -2,7 +2,6 @@
 export NACL_SDK_ROOT=~/nacl_sdk/pepper_21
 export NACL_SDK_BIN=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/bin
 export NACL_SDK_LIB=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/x86_64-nacl/lib32
-export CC=${NACL_SDK_BIN}/i686-nacl-gcc
 export NACL_TOOLS=${NACL_SDK_ROOT}/tools
 export NACL_SEL_LDR=${NACL_TOOLS}/sel_ldr_x86_32
 export NACL_IRT=${NACL_TOOLS}/irt_x86_32.nexe
@@ -10,5 +9,8 @@ export NACL_IRT=${NACL_TOOLS}/irt_x86_32.nexe
 export NACL_RUN="$(pwd)/nacl_run"
 
 function conf() {
-  ../gforth-0.7.0/configure --host=i686-nacl
+  SRC_DIR="$(cd ../gforth-0.7.0 && pwd)"
+  ${SRC_DIR}/configure \
+      --host=i686-nacl \
+      CC="${NACL_SDK_BIN}/i686-nacl-gcc"
 }
