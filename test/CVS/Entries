@@ -1,0 +1,22 @@
+/checkans.fs/1.4/Mon May 17 13:52:18 1999//
+/checkans.out/1.2/Sun Aug 29 15:45:22 1999//
+/coretest.fs/1.2/Thu Jun 17 19:54:36 1999//
+/coretest.out/1.2/Sun Oct 22 16:54:01 2006//
+/deferred.fs/1.1/Sun Nov 28 20:20:38 2004//
+/gforth.out/1.1/Sun Oct 22 16:54:02 2006//
+/postpone.fs/1.1/Wed May 21 20:40:20 1997//
+/tester.fs/1.8/Tue Aug 28 19:12:39 2007//
+/dbltest.fs/1.11/Mon Dec 31 18:19:58 2007//
+/float.fs/1.7/Mon Dec 31 18:19:58 2007//
+/gforth-nofast.fs/1.5/Mon Dec 31 18:19:58 2007//
+/gforth.fs/1.15/Mon Dec 31 18:19:58 2007//
+/libcc.fs/1.7/Mon Dec 31 18:19:58 2007//
+/search.fs/1.2/Mon Dec 31 18:19:58 2007//
+/signals.fs/1.6/Mon Dec 31 18:19:58 2007//
+/coreext.fs/1.3/Mon Dec 31 19:02:03 2007//
+/coremore.fs/1.3/Mon Dec 31 19:02:04 2007//
+/other.fs/1.24/Mon Dec 31 19:02:05 2007//
+/primtest.fs/1.5/Mon Dec 31 19:02:05 2007//
+/string.fs/1.6/Mon Dec 31 19:02:06 2007//
+/ttester.fs/1.11/Thu Mar  6 19:26:04 2008//
+D
