@@ -643,12 +643,23 @@ AC_MSG_RESULT($PREFORTH)
 #echo "machine='$machine'"
 
 dnl AC_CHECK_PROG(asm_fs,asm.fs,arch/$machine/asm.fs,,$srcdir/arch/$machine)
-AC_CHECK_FILE($srcdir/arch/$machine/asm.fs,[asm_fs=arch/$machine/asm.fs],)
-AC_SUBST(asm_fs)
+dnl AC_CHECK_FILE($srcdir/arch/$machine/asm.fs,[asm_fs=arch/$machine/asm.fs],)
+dnl AC_SUBST(asm_fs)
+if test -e "$srcdir/arch/$machine/asm.fs"; then
+  asm_fs="arch/$machine/asm.fs"
+else
+  asm_fs=''
+fi
 
 dnl AC_CHECK_PROG(disasm_fs,disasm.fs,arch/$machine/disasm.fs,,$srcdir/arch/$machine)
-AC_CHECK_FILE($srcdir/arch/$machine/disasm.fs,[disasm_fs=arch/$machine/disasm.fs],)
-AC_SUBST(disasm_fs)
+dnl AC_CHECK_FILE($srcdir/arch/$machine/disasm.fs,[disasm_fs=arch/$machine/disasm.fs],)
+dnlAC_SUBST(disasm_fs)
+if test -e "$srcdir/arch/$machine/disasm.fs"; then
+  disasm_fs="arch/$machine/disasm.fs"
+else
+  disasm_fs=''
+fi
+
 
 AC_PATH_PROG(INSTALL_INFO,install-info,[echo '>>>>Please make info dir entry:'],$PATH:/sbin:/usr/sbin:/usr/local/sbin)
 
