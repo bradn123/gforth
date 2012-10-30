@@ -696,6 +696,9 @@ case "$host_os" in
 		;;
 	*nacl*)
 		test "$skipcode" || skipcode="nop"
+		DIRSEP="/"
+		PATHSEP=":"
+		DEFAULTSYSTEMPREFIX=""
 		;;
 	*)
 		DIRSEP="/"
