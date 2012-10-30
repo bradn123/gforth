@@ -73,8 +73,8 @@ FORTHSIZES = @FORTHSIZES@
 FORTHS_ARGS =  -p "$(FORTHPATH)$(PATHSEP)$(srcdir)"
 FORTH_ARGS = --die-on-signal $(FORTHS_ARGS)
 ENGINE = ./gforth
-FORTH	= $(srcdir)/nacl_run $(ENGINE) $(FORTH_ARGS)
-FORTHS	= $(srcdir)/nacl_run $(ENGINE) $(FORTHS_ARGS)
+FORTH	= $(ENGINE) $(FORTH_ARGS)
+FORTHS	= $(ENGINE) $(FORTHS_ARGS)
 # the (existing) forth system to use for cross compiling and primitives tables
 # per default we use the one in this directory for a rebuild. It is also
 # possible to override this variable at the command line for an initial build (jaw)
