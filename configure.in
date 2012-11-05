@@ -650,6 +650,7 @@ if test -e "$srcdir/arch/$machine/asm.fs"; then
 else
   asm_fs=''
 fi
+AC_SUBST(asm_fs)
 
 dnl AC_CHECK_PROG(disasm_fs,disasm.fs,arch/$machine/disasm.fs,,$srcdir/arch/$machine)
 dnl AC_CHECK_FILE($srcdir/arch/$machine/disasm.fs,[disasm_fs=arch/$machine/disasm.fs],)
@@ -659,6 +660,7 @@ if test -e "$srcdir/arch/$machine/disasm.fs"; then
 else
   disasm_fs=''
 fi
+AC_SUBST(disasm_fs)
 
 
 AC_PATH_PROG(INSTALL_INFO,install-info,[echo '>>>>Please make info dir entry:'],$PATH:/sbin:/usr/sbin:/usr/local/sbin)
@@ -903,7 +905,11 @@ dnl anything but DOS
 AC_CHECK_HEADERS(sys/mman.h fnmatch.h alloca.h wchar.h)
 AC_FUNC_FNMATCH
 test $ac_cv_func_fnmatch_works = yes || AC_LIBOBJ(fnmatch)
-AC_CHECK_FUNCS(mmap sysconf getpagesize wcwidth)
+if test $host_os=nacl; then
+  AC_CHECK_FUNCS(sysconf getpagesize wcwidth)
+else
+  AC_CHECK_FUNCS(mmap sysconf getpagesize wcwidth)
+fi
 AM_PATH_LISPDIR
 
 kernel_fi=kernl${vwordsize}${bytesex}.fi
