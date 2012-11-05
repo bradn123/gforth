@@ -1,7 +1,7 @@
 #!/bin/bash
 EXE="$(cd $(dirname $1) && pwd)/$(basename $1)"
 shift
-echo "PWD $(pwd)"
-echo "NACL_RUN $EXE $@"
-"${NACL_SEL_LDR}" -a -v -B "${NACL_IRT}" -- \
+#echo "PWD $(pwd)"
+#echo "NACL_RUN $EXE $@"
+"${NACL_SEL_LDR}" -a -B "${NACL_IRT}" -- \
   "${NACL_SDK_LIB}/runnable-ld.so" --library-path "${NACL_SDK_LIB}" "$EXE" "$@"
