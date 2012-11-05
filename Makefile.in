@@ -1008,9 +1008,10 @@ config.status: configure
 	./config.status --recheck
 
 #create files for DOS, because DOS cannot do it itself
-makefile.dos engine/makefile.dos: mkdosmf.sed Makefile.in engine/Makefile.in
-	sed -f mkdosmf.sed <Makefile.in >makefile.dos
-	sed -f mkdosmf.sed <engine/Makefile.in >engine/makefile.dos
+makefile.dos: mkdosmf.sed Makefile.in
+	sed -f $< <$(word 1,$^) >$@
+engine/makefile.dos: mkdosmf.sed engine/Makefile.in
+	sed -f $< <$(word 1,$^) >$@
 
 makefile.os2 engine/makefile.os2: mkos2mf.sed Makefile.in engine/Makefile.in
 	sed -f mkos2mf.sed <Makefile.in >makefile.os2
