@@ -1009,14 +1009,16 @@ config.status: configure
 
 #create files for DOS, because DOS cannot do it itself
 makefile.dos: mkdosmf.sed Makefile.in
-	sed -f $< <$(word 1,$^) >$@
+	sed -f $< <$(word 2,$^) >$@
 engine/makefile.dos: mkdosmf.sed engine/Makefile.in
-	sed -f $< <$(word 1,$^) >$@
+	sed -f $< <$(word 2,$^) >$@
 
-makefile.os2 engine/makefile.os2: mkos2mf.sed Makefile.in engine/Makefile.in
-	sed -f mkos2mf.sed <Makefile.in >makefile.os2
-	sed -f mkos2mf.sed <engine/Makefile.in >engine/makefile.os2
-	echo '%.o:	%.c' >>makefile.os2
-	echo '		$$(GCC) $$(CFLAGS) $$(CPPFLAGS) -c $$<' >>makefile.os2
-	echo '%.o:	%.c' >>engine/makefile.os2
-	echo '		$$(GCC) $$(CFLAGS) $$(CPPFLAGS) -c $$<' >>engine/makefile.os2
+makefile.os2: mkos2mf.sed Makefile.in
+	sed -f $< <$(word 2,$^) >$@
+	echo '%.o:	%.c' >>$@
+	echo '		$$(GCC) $$(CFLAGS) $$(CPPFLAGS) -c $$<' >>$@
+
+engine/makefile.os2: mkos2mf.sed engine/Makefile.in
+	sed -f $< <$(word 2,$^) >$@
+	echo '%.o:	%.c' >>$@
+	echo '		$$(GCC) $$(CFLAGS) $$(CPPFLAGS) -c $$<' >>$@
