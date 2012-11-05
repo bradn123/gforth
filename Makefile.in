@@ -73,12 +73,12 @@ FORTHSIZES = @FORTHSIZES@
 FORTHS_ARGS =  -p "$(FORTHPATH)$(PATHSEP)$(srcdir)"
 FORTH_ARGS = --die-on-signal $(FORTHS_ARGS)
 ENGINE = ./gforth
-FORTH	= $(ENGINE) $(FORTH_ARGS)
-FORTHS	= $(ENGINE) $(FORTHS_ARGS)
+FORTH	= $(TARGET_RUN)$(ENGINE) $(FORTH_ARGS)
+FORTHS	= $(TARGET_RUN)$(ENGINE) $(FORTHS_ARGS)
 # the (existing) forth system to use for cross compiling and primitives tables
 # per default we use the one in this directory for a rebuild. It is also
 # possible to override this variable at the command line for an initial build (jaw)
-BUILDFORTH = $(ENGINE) --die-on-signal -m 4M -p ".$(PATHSEP)~+$(PATHSEP)$(srcdir)" -i $(kernel_fi)
+BUILDFORTH = $(TARGET_RUN)$(ENGINE) --die-on-signal -m 4M -p ".$(PATHSEP)~+$(PATHSEP)$(srcdir)" -i $(kernel_fi)
 # the forth system plus flags we use to build
 FORTHB = $(BUILDFORTH) exboot.fs -e 'fpath= .|~+|$(srcdir)'
 # the Forth system for running prims2x.fs
@@ -620,7 +620,7 @@ install:	gforth$(EC)$(EXE) $(FORTH_SRC) $(kernel_fi) gforth.fi gforthmi vmgen do
 			echo '>>>>>Please install gforth.{el,elc} in your .../emacs/site-lisp directory'; \
 		fi
 		-$(RM) gforth.fi
-		GFORTHD="./gforth-ditc -p $(DESTDIR)$(libdir)/gforth/site-forth$(PATHSEP)$(DESTDIR)$(siteforthdir)$(PATHSEP)$(DESTDIR)$(datadir)/gforth/$(VERSION) -i $(kernel_fi)" GFORTH="./gforth-ditc -p $(DESTDIR)$(libdir)/gforth/site-forth$(PATHSEP)$(DESTDIR)$(siteforthdir)$(PATHSEP)$(DESTDIR)$(datadir)/gforth/$(VERSION) --die-on-signal -i $(kernel_fi) $(STARTUP)" includedir=$(includedir) bindir=$(bindir) libccdir=$(libccdir) GFORTHPATH=.:"$$GFORTHPATH" GFORTHDESTDIR="$(DESTDIR)" ./gforthmi gforth.fi $(FORTHSIZES) $(STARTUP)
+		GFORTHD="$(TARGET_RUN)./gforth-ditc -p $(DESTDIR)$(libdir)/gforth/site-forth$(PATHSEP)$(DESTDIR)$(siteforthdir)$(PATHSEP)$(DESTDIR)$(datadir)/gforth/$(VERSION) -i $(kernel_fi)" GFORTH="$(TARGET_RUN)./gforth-ditc -p $(DESTDIR)$(libdir)/gforth/site-forth$(PATHSEP)$(DESTDIR)$(siteforthdir)$(PATHSEP)$(DESTDIR)$(datadir)/gforth/$(VERSION) --die-on-signal -i $(kernel_fi) $(STARTUP)" includedir=$(includedir) bindir=$(bindir) libccdir=$(libccdir) GFORTHPATH=.:"$$GFORTHPATH" GFORTHDESTDIR="$(DESTDIR)" ./gforthmi gforth.fi $(FORTHSIZES) $(STARTUP)
 		$(INSTALL_DATA) gforth.fi $(DESTDIR)$(libdir)/gforth/$(VERSION)
 		$(INSTALL_DATA) install.TAGS $(DESTDIR)$(datadir)/gforth/$(VERSION)/TAGS
 		$(RM) gforth.fi install.TAGS
@@ -770,7 +770,7 @@ kernl64l$(EC).fi:	$(KERNLS)
 #		-$(CP) $< $@
 
 gforth.fi:	$(kernel_fi) gforthmi gforth-ditc$(EC)$(EXE) $(GFORTH_FI_SRC) comp-i.fs
-		GFORTHD="./gforth-ditc -p .$(PATHSEP)$(srcdir)" GFORTH="./gforth-ditc --die-on-signal -p .$(PATHSEP)$(srcdir) -i $(kernel_fi) $(STARTUP)" includedir=`pwd`/include bindir=`pwd` libccdir=`pwd`/lib/gforth/$(VERSION)/libcc-named/ ./gforthmi gforth.fi $(FORTHSIZES) $(FORTHKFLAGS) $(STARTUP)
+		GFORTHD="$(TARGET_RUN)./gforth-ditc -p .$(PATHSEP)$(srcdir)" GFORTH="$(TARGET_RUN)./gforth-ditc --die-on-signal -p .$(PATHSEP)$(srcdir) -i $(kernel_fi) $(STARTUP)" includedir=`pwd`/include bindir=`pwd` libccdir=`pwd`/lib/gforth/$(VERSION)/libcc-named/ ./gforthmi gforth.fi $(FORTHSIZES) $(FORTHKFLAGS) $(STARTUP)
 
 # -------------	Make c-engine
 
