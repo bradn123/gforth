@@ -127,7 +127,7 @@ char *tilde_cstr(Char *from, UCell size, int clear)
 Cell opencreate_file(char *s, Cell wfam, int flags, Cell *wiorp)
 {
   Cell wfileid;
-  wfileid = (Cell)fopen(fd, fileattr[wfam]);
+  wfileid = (Cell)fopen(s, fileattr[wfam]);
   *wiorp = IOR(wfileid == 0);
   return wfileid;
 }
