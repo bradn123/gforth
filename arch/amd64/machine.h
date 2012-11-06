@@ -42,11 +42,17 @@
 
 #endif
 
+#ifdef __native_client__
+#define ASM_SM_SLASH_REM(d1lo, d1hi, n1, n2, n3) \
+	asm("idivl %4": "=a"(n3),"=d"(n2) : "a"(d1lo),"d"(d1hi),"g"(n1):"cc");
+#define ASM_UM_SLASH_MOD(d1lo, d1hi, n1, n2, n3) \
+	asm("divl %4": "=a"(n3),"=d"(n2) : "a"(d1lo),"d"(d1hi),"g"(n1):"cc");
+#else
 #define ASM_SM_SLASH_REM(d1lo, d1hi, n1, n2, n3) \
 	asm("idivq %4": "=a"(n3),"=d"(n2) : "a"(d1lo),"d"(d1hi),"g"(n1):"cc");
-
 #define ASM_UM_SLASH_MOD(d1lo, d1hi, n1, n2, n3) \
 	asm("divq %4": "=a"(n3),"=d"(n2) : "a"(d1lo),"d"(d1hi),"g"(n1):"cc");
+#endif
 
 #include "../generic/machine.h"
 

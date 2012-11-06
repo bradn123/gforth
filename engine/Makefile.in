@@ -144,6 +144,9 @@ getopt1.o: getopt1.c getopt.h
 
 getopt.o: getopt.c getopt.h
 
+gforth$(OPT)$(EC).nexe:	$(OBJECTS) $(AOBJECTS) $(LTDLDEPS)
+	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) $(LDLIBS) -o $@
+
 gforth$(OPT)$(EC)$(EXE):	$(OBJECTS) $(AOBJECTS) $(LTDLDEPS)
 	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) $(LDLIBS) -o $@
 

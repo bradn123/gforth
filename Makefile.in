@@ -426,7 +426,7 @@ SOURCES	= $(CVSDIRS) $(ENGINE_SOURCES) compat Makefile.in Makedist.in \
 
 RCS_FILES =  ToDo model high-level
 
-ENGINES = gforth$(EC)$(EXE) gforth-ditc$(EC)$(EXE) gforth-itc$(EC)$(EXE) $(PROFEXES)
+ENGINES = index.html gforth.nexe gforth.nmf gforth$(EC)$(EXE) gforth-ditc$(EC)$(EXE) gforth-itc$(EC)$(EXE) $(PROFEXES)
 
 ENGINES_FAST = gforth-fast$(OPT)$(EC)$(EXE) #gforth-native$(OPT)$(EC)$(EXE) 
 
@@ -477,6 +477,9 @@ all: kernel/version.fs more check
 
 # use this dependency for phony targets just as mostlyclean,...
 FORCE: ;
+
+http: httpd.py
+	python $<
 
 #this rule avoids remaking everything after minor changes in Makefile.in
 version:	Makefile.in configure.in
@@ -831,6 +834,15 @@ gforth$(OPT)$(EC)$(EXE): $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @
 		@GFORTH_EXE@; \
 		$(MAKE) checkone check-nofast ENGINE=./engine/$@; \
 	fi
+
+gforth$(EC).nexe: $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @kernel_anti_dependence@
+	$(MAKE) optgforth OPT=-ll-reg && $(CP) gforth-ll-reg$(EC)$(EXE) $@
+
+gforth.nmf: gforth.nexe
+	python $(NACL_TOOLS)/create_nmf.py -o $@ -s . -L ${NACL_SDK_LIB} $< -t glibc
+
+index.html: index.html.in
+	cp $< $@
 
 optgforth:
 	$(MAKE) gforth$(OPT)$(EC)$(EXE) $(MAKELINE$(OPT))
