@@ -3,5 +3,5 @@ EXE="$(cd $(dirname $1) && pwd)/$(basename $1)"
 shift
 #echo "PWD $(pwd)"
 #echo "NACL_RUN $EXE $@"
-"${NACL_SEL_LDR}" -a -B "${NACL_IRT}" -- \
+"${NACL_SEL_LDR}" -a -B "${NACL_IRT}" -E OUTSIDE_BROWSER=1 -E "PWD=${PWD}" -- \
   "${NACL_SDK_LIB}/runnable-ld.so" --library-path "${NACL_SDK_LIB}" "$EXE" "$@"

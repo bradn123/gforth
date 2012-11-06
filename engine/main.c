@@ -2263,6 +2263,10 @@ void data_abort_C(void)
 }
 #endif
 
+#ifdef __native_client__
+extern int PpapiPluginMain();
+#endif
+
 int main(int argc, char **argv, char **env)
 {
 #ifdef HAS_OS
@@ -2276,7 +2280,15 @@ int main(int argc, char **argv, char **env)
   Address image;
 #endif
   int retvalue;
-	  
+
+#ifdef __native_client__
+  char *pwd;
+  char buf[100];
+  if (!getenv("OUTSIDE_BROWSER")) {
+    return PpapiPluginMain();
+  }
+#endif
+
   code_here = ((void *)0)+CODE_BLOCK_SIZE; /* llvm-gcc does not like this as
                                               initializer, so we do it here */
 #ifdef MACOSX_DEPLOYMENT_TARGET
