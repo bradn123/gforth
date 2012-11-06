@@ -101,9 +101,9 @@ FORTH	= $(BOOTFORTH) --die-on-signal
 #John Wavrik should use -Xlinker -N to get a writable text (executable)
 XLDFLAGS = @LDFLAGS@
 LDFLAGS =  $(DEBUGFLAG) $(XLDFLAGS)
-LDLIBS  = @LIBS@ @LTDL_LDLIBS@
+LDLIBS  = @LIBS@ @LTDL_LDLIBS@ -lppapi -lppapi_cpp -lstdc++
 
-AOBJECTS = @signals_o@ support$(OPT).o @LIBOBJS@ $(OPTOBJECTS)
+AOBJECTS = @signals_o@ support$(OPT).o @LIBOBJS@ $(OPTOBJECTS) ppapi_main.o
 
 @MAKEINC@
 
@@ -125,6 +125,9 @@ MAIN_FAST_DEPS = main.c $(DEPS) prim_superend-fast.i prim_num-fast.i prim_grp-fa
 
 #some makes don't do the -o $@ correctly, so we help them
 .c.o:
+	$(GCC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+
+.cc.o:
 	$(GCC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 .s.o:
@@ -265,4 +268,3 @@ image.i:	../fi2c.fs ../$(include_fi)
 
 #phony targets depend on FORCE; this is more portable than .PHONY
 FORCE:
-

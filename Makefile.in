@@ -401,7 +401,7 @@ ENGINE_SOURCES = engine/Makefile.in engine/config.h.in \
 	engine/pow10.c engine/atanh.c engine/cleanalign.c \
 	engine/strerror.c engine/strsignal.c engine/dblsub.c \
 	engine/fnmatch.h engine/fnmatch.c \
-	engine/makefile.dos engine/makefile.os2
+	engine/makefile.dos engine/makefile.os2 engine/ppapi_main.cc
 
 SOURCES	= $(CVSDIRS) $(ENGINE_SOURCES) compat Makefile.in Makedist.in \
 	gforthmi.in vmgen.in preforth.in gfgen README.vmgen NEWS.vmgen \
