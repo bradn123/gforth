@@ -26,6 +26,11 @@ function init() {
 }
 
 function moduleDidLoad(e) {
+  alert('started!');
+  var module = document.getElementById('gforth');
+  module.addEventListener('message', function(msg) {
+    alert('got: ' + msg.data);
+  });
 }
 
 //]]>

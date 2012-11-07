@@ -101,9 +101,9 @@ FORTH	= $(BOOTFORTH) --die-on-signal
 #John Wavrik should use -Xlinker -N to get a writable text (executable)
 XLDFLAGS = @LDFLAGS@
 LDFLAGS =  $(DEBUGFLAG) $(XLDFLAGS)
-LDLIBS  = @LIBS@ @LTDL_LDLIBS@ -lppapi -lppapi_cpp -lstdc++
+LDLIBS  = @LIBS@ @LTDL_LDLIBS@
 
-AOBJECTS = @signals_o@ support$(OPT).o @LIBOBJS@ $(OPTOBJECTS) ppapi_main.o
+AOBJECTS = @signals_o@ support$(OPT).o @LIBOBJS@ $(OPTOBJECTS)
 
 @MAKEINC@
 
@@ -145,7 +145,7 @@ getopt1.o: getopt1.c getopt.h
 getopt.o: getopt.c getopt.h
 
 gforth$(OPT)$(EC).nexe:	$(OBJECTS) $(AOBJECTS) $(LTDLDEPS)
-	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) $(LDLIBS) -o $@
+	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) $(LDLIBS) ppapi_main.o -lppapi -lppapi_cpp -lstdc++ -o $@
 
 gforth$(OPT)$(EC)$(EXE):	$(OBJECTS) $(AOBJECTS) $(LTDLDEPS)
 	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) $(LDLIBS) -o $@

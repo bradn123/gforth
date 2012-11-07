@@ -23,6 +23,11 @@
 #define USE_TOS
 #endif
 
+/* Don't use forced regs for nacl */
+#if defined(FORCE_REG) && defined(__native_client__)
+#undef FORCE_REG
+#endif
+
 #ifndef USE_FTOS
 #ifndef USE_NO_FTOS
 #if 1 || defined(FORCE_REG)

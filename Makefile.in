@@ -426,7 +426,7 @@ SOURCES	= $(CVSDIRS) $(ENGINE_SOURCES) compat Makefile.in Makedist.in \
 
 RCS_FILES =  ToDo model high-level
 
-ENGINES = index.html gforth.nexe gforth.nmf gforth$(EC)$(EXE) gforth-ditc$(EC)$(EXE) gforth-itc$(EC)$(EXE) $(PROFEXES)
+ENGINES = index.html gforth.tar gforth.nexe gforth.nmf gforth$(EC)$(EXE) gforth-ditc$(EC)$(EXE) gforth-itc$(EC)$(EXE) $(PROFEXES)
 
 ENGINES_FAST = gforth-fast$(OPT)$(EC)$(EXE) #gforth-native$(OPT)$(EC)$(EXE) 
 
@@ -843,6 +843,9 @@ gforth.nmf: gforth.nexe
 
 index.html: index.html.in
 	cp $< $@
+
+gforth.tar: gforth.fi
+	tar cf $@ $<
 
 optgforth:
 	$(MAKE) gforth$(OPT)$(EC)$(EXE) $(MAKELINE$(OPT))
