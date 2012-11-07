@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e
+set -x
+
+export NACL_SDK_ROOT=~/nacl_sdk/pepper_21
+export NACL_SDK_BIN=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/bin
+export NACL_TOOLS=${NACL_SDK_ROOT}/tools
+export NACL_SDK_LIB_BASE=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/x86_64-nacl/lib
+export SRC_DIR="$(pwd)"
+export TARGET_RUN="${SRC_DIR}/nacl_run "
+
+
+function conf() {
+  export BITS=$1
+  export ARCH=$2
+
+  export NACL_SDK_LIB=${NACL_SDK_LIB_BASE}${BITS}
+  export NACL_SEL_LDR=${NACL_TOOLS}/sel_ldr_x86_${BITS}
+  export NACL_IRT=${NACL_TOOLS}/irt_x86_${BITS}.nexe
+
+  mkdir -p out/obj${BITS}
+  cd out/obj${BITS}
+  ${SRC_DIR}/configure \
+      --host=${ARCH}-nacl \
+      CC="${NACL_SDK_BIN}/${ARCH}-nacl-gcc"
+  cd ${SRC_DIR}
+}
+
+function main() {
+  rm -rf out
+  ./autogen.sh
+  conf 32 i686
+  make -C out/obj32
+  conf 64 x86_64
+  make -C out/obj64
+  mkdir -p out/publish
+  cp out/obj32/gforth.nexe out/publish/gforth_x86_32.nexe
+  cp out/obj64/gforth.nexe out/publish/gforth_x86_64.nexe
+  python ${NACL_TOOLS}/create_nmf.py \
+      -o out/publish/gforth.nmf \
+      -L ${NACL_SDK_LIB_BASE}32 \
+      -L ${NACL_SDK_LIB_BASE}64 \
+      -t glibc out/publish/gforth_x86_32.nexe \
+      -t glibc out/publish/gforth_x86_64.nexe \
+      -s out/publish
+  tar cf out/publish/gforth.tar out/obj32/gforth.fi
+  cp ${SRC_DIR}/index.html.in out/publish/index.html
+  zip -r out/publish.zip out/publish
+}
+
+main
