@@ -6,6 +6,9 @@
 #include "nacl-mounts/console/JSPostMessageBridge.h"
 
 
+#define USE_PSEUDO_THREADS
+
+
 extern "C" int main(int argc, char *argv[]);
 extern "C" int umount(const char *path);
 extern "C" int mount(const char *source, const char *target,
@@ -30,7 +33,13 @@ static void *gforth_init(void *arg) {
   MainThreadRunner* runner = reinterpret_cast<MainThreadRunner*>(arg);
 
   chdir("/");
-  Download(runner, "gforth.tar", "/gforth.tar");
+#if NACL_BITS == 32
+  Download(runner, "gforth32.tar", "/gforth.tar");
+#elif NACL_BITS == 64
+  Download(runner, "gforth64.tar", "/gforth.tar");
+#else
+# error "Bad NACL_BITS value"
+#endif
   simple_tar_extract("/gforth.tar");
 
   setenv("OUTSIDE_BROWSER", "1", 1);
