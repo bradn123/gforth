@@ -17,44 +17,13 @@
 <title>Gforth</title>
 </head>
 
-<body onload="init()">
-
-<script type="text/javascript">
-//<![CDATA[
-
-function init() {
-}
-
-function moduleDidLoad(e) {
-  var module = document.getElementById('gforth');
-  module.addEventListener('message', function(msg) {
-    var prefix1 = 'JSPipeMount:1:';
-    var prefix2 = 'JSPipeMount:2:';
-    var data = '';
-    if (msg.data.slice(0, prefix1.length) == prefix1) {
-      data = msg.data.slice(prefix1.length);
-    } else if (msg.data.slice(0, prefix2.length) == prefix2) {
-      data = msg.data.slice(prefix2.length);
-    }
-    data = data.replace('\n', '<br>\n');
-    document.getElementById('console').innerHTML += data;
-  });
-}
-
-//]]>
-</script>
-
-<div id="listener">
-  <script type="text/javascript">
-    document.getElementById('listener').addEventListener(
-        'load', moduleDidLoad, true);
-  </script>
-  <embed name="nacl_module"
-         id="gforth"
-         width=0 height=0
-         src="gforth.nmf"
-         type="application/x-nacl" />
-</div>
+<body>
+<embed name="nacl_module"
+       id="gforth"
+       width=0 height=0
+       src="gforth.nmf"
+        type="application/x-nacl" />
 <div id="console"></div>
+<script type="text/javascript" src="gforth.js"></script>
 </body>
 </html>

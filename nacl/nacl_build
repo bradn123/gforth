@@ -37,14 +37,19 @@ function main() {
   mkdir -p out/publish
   cp out/obj32/gforth.nexe out/publish/gforth_x86_32.nexe
   cp out/obj64/gforth.nexe out/publish/gforth_x86_64.nexe
+
+  # Create nmf.
+  cd out/publish
   python ${NACL_TOOLS}/create_nmf.py \
-      -o out/publish/gforth.nmf \
+      -o gforth.nmf \
       -L ${NACL_SDK_LIB_BASE}32 \
       -L ${NACL_SDK_LIB_BASE}64 \
-      -t glibc out/publish/gforth_x86_32.nexe \
-      -t glibc out/publish/gforth_x86_64.nexe \
-      -s out/publish
-  mkdir -p out/stage
+      -t glibc \
+      gforth_x86_32.nexe \
+      gforth_x86_64.nexe \
+      -s .
+  cd ${SRC_DIR}
+
   tar cf out/publish/gforth32.tar -C out/obj32 gforth.fi
   tar cf out/publish/gforth64.tar -C out/obj64 gforth.fi
   cp ${SRC_DIR}/nacl/index.html out/publish
