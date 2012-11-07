@@ -2265,10 +2265,6 @@ void data_abort_C(void)
 
 #ifdef __native_client__
 extern int PpapiPluginMain();
-
-int __attribute__ ((weak)) PpapiPluginMain() {
-  return 0;
-}
 #endif
 
 int main(int argc, char **argv, char **env)

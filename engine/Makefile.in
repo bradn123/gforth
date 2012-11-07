@@ -103,7 +103,8 @@ XLDFLAGS = @LDFLAGS@
 LDFLAGS =  $(DEBUGFLAG) $(XLDFLAGS)
 LDLIBS  = @LIBS@ @LTDL_LDLIBS@
 
-AOBJECTS = @signals_o@ support$(OPT).o @LIBOBJS@ $(OPTOBJECTS)
+BARE_AOBJECTS = @signals_o@ support$(OPT).o @LIBOBJS@ $(OPTOBJECTS)
+AOBJECTS = $(BARE_AOBJECTS) ppapi_stub.o
 
 @MAKEINC@
 
@@ -145,7 +146,7 @@ getopt1.o: getopt1.c getopt.h
 getopt.o: getopt.c getopt.h
 
 gforth$(OPT)$(EC).nexe:	$(OBJECTS) $(AOBJECTS) $(LTDLDEPS) ppapi_main.o
-	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) ppapi_main.o $(LDLIBS) -lnacl-mounts -lppapi -lppapi_cpp -lstdc++ -lpthread -o $@
+	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(BARE_AOBJECTS) ppapi_main.o $(LDLIBS) -lnacl-mounts -lppapi -lppapi_cpp -lstdc++ -lpthread -o $@
 
 gforth$(OPT)$(EC)$(EXE):	$(OBJECTS) $(AOBJECTS) $(LTDLDEPS)
 	$(GCCLD) $(LDFLAGS) $(OBJECTS) $(AOBJECTS) $(LDLIBS) -o $@
