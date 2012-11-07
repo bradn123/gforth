@@ -835,8 +835,13 @@ gforth$(OPT)$(EC)$(EXE): $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @
 		$(MAKE) checkone check-nofast ENGINE=./engine/$@; \
 	fi
 
-gforth.nexe: $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @kernel_anti_dependence@
-	( cd engine && $(MAKE) OPT=-ll-reg gforth-ll-reg.nexe ) && $(CP) engine/gforth-ll-reg.nexe $@
+gforth$(OPT)$(EC).nexe: $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @kernel_anti_dependence@
+	if test -z "$(OPT)"; then \
+		for i in $(OPTS); do $(MAKE) optgforthnexe OPT=$$i && $(CP) gforth$${i}$(EC).nexe $@ && break; done; \
+	else \
+		( cd engine && $(MAKE) $@ ) && \
+		$(CP) engine/$@ $@; \
+	fi
 
 gforth.nmf: gforth.nexe
 	python $(NACL_TOOLS)/create_nmf.py -o $@ -s . -L ${NACL_SDK_LIB} $< -t glibc
@@ -849,6 +854,9 @@ gforth.tar: gforth.fi
 
 optgforth:
 	$(MAKE) gforth$(OPT)$(EC)$(EXE) $(MAKELINE$(OPT))
+
+optgforthnexe:
+	$(MAKE) gforth$(OPT)$(EC).nexe $(MAKELINE$(OPT))
 
 gforth-fast$(OPT)$(EC)$(EXE): $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE_FAST) engine/config.h
 	if test -z "$(OPT)"; then \
