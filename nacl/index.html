@@ -6,12 +6,28 @@
 
 <style>
   body {
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
+    background-color: #eeeeff;
+    color: #000000;
+  }
+  a:link {
+    color: blue;
+  }
+  a:visited {
+    color: blue;
+  }
+  div.console {
+    font-family: "Courier New"
+    Courier
+    "Andale Mono"
+    "Fixed"
+    "Lucidatypewriter"
+    monospace;
+    font-size: 20px;
+    white-space: pre-wrap;
+  }
+  span.cursor {
+    color: #eeeeff;
+    background-color: #000077;
   }
 </style>
 <title>Gforth</title>
@@ -23,7 +39,7 @@
        width=0 height=0
        src="gforth.nmf"
         type="application/x-nacl" />
-<div id="console"></div>
+<div id="outdiv" class="console"><span id="out">Loading... </span><span id="prompt"></span><span id="cursor"><span class="cursor"> </span></span></div>
 <script type="text/javascript" src="gforth.js"></script>
 </body>
 </html>

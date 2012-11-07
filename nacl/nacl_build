@@ -53,6 +53,7 @@ function main() {
   tar cf out/publish/gforth32.tar -C out/obj32 gforth.fi
   tar cf out/publish/gforth64.tar -C out/obj64 gforth.fi
   cp ${SRC_DIR}/nacl/index.html out/publish
+  cp ${SRC_DIR}/nacl/gforth.js out/publish
   cp ${SRC_DIR}/nacl/manifest.json out/publish
   cp ${SRC_DIR}/nacl/icon_*.png out/publish
   zip -r out/publish.zip out/publish
