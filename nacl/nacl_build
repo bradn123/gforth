@@ -8,7 +8,7 @@ export NACL_SDK_BIN=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/bin
 export NACL_TOOLS=${NACL_SDK_ROOT}/tools
 export NACL_SDK_LIB_BASE=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/x86_64-nacl/lib
 export SRC_DIR="$(pwd)"
-export TARGET_RUN="${SRC_DIR}/nacl_run "
+export TARGET_RUN="${SRC_DIR}/nacl/nacl_run "
 
 
 function conf() {
@@ -47,7 +47,9 @@ function main() {
   mkdir -p out/stage
   tar cf out/publish/gforth32.tar -C out/obj32 gforth.fi
   tar cf out/publish/gforth64.tar -C out/obj64 gforth.fi
-  cp ${SRC_DIR}/index.html.in out/publish/index.html
+  cp ${SRC_DIR}/nacl/index.html out/publish
+  cp ${SRC_DIR}/nacl/manifest.json out/publish
+  cp ${SRC_DIR}/nacl/icon_*.png out/publish
   zip -r out/publish.zip out/publish
 }
 
