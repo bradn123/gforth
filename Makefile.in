@@ -835,8 +835,8 @@ gforth$(OPT)$(EC)$(EXE): $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @
 		$(MAKE) checkone check-nofast ENGINE=./engine/$@; \
 	fi
 
-gforth$(EC).nexe: $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @kernel_anti_dependence@
-	$(MAKE) optgforth OPT=-ll-reg && $(CP) gforth-ll-reg$(EC)$(EXE) $@
+gforth.nexe: $(ENGINE_SOURCES) $(FORTH_GEN_ENGINE) engine/config.h @kernel_anti_dependence@
+	( cd engine && $(MAKE) OPT=-ll-reg gforth-ll-reg.nexe ) && $(CP) engine/gforth-ll-reg.nexe $@
 
 gforth.nmf: gforth.nexe
 	python $(NACL_TOOLS)/create_nmf.py -o $@ -s . -L ${NACL_SDK_LIB} $< -t glibc

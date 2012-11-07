@@ -29,8 +29,8 @@ static void Download(MainThreadRunner* runner,
 static void *gforth_init(void *arg) {
   MainThreadRunner* runner = reinterpret_cast<MainThreadRunner*>(arg);
 
-  Download(runner, "gforth.tar", "/gforth.tar");
   chdir("/");
+  Download(runner, "gforth.tar", "/gforth.tar");
   simple_tar_extract("/gforth.tar");
 
   setenv("OUTSIDE_BROWSER", "1", 1);
