@@ -6,7 +6,7 @@
 #include "nacl-mounts/console/JSPostMessageBridge.h"
 
 
-#define USE_PSEUDO_THREADS
+//#define USE_PSEUDO_THREADS
 
 
 extern "C" int main(int argc, char *argv[]);
