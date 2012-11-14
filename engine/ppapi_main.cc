@@ -86,8 +86,10 @@ class GforthInstance : public pp::Instance {
 
     // Mount local storage.
     {
-      mkdir("/save");
-      PepperMount* pm = new PepperMount(runner_, fs_, 100 * 1024 * 1024);
+      mkdir("/save", 0777);
+      pp::FileSystem *fs = new pp::FileSystem(
+          this, PP_FILESYSTEMTYPE_LOCALPERSISTENT);
+      PepperMount* pm = new PepperMount(runner_, fs, 100 * 1024 * 1024);
       pm->SetPathPrefix("/save");
       mount(0, "/save", 0, 0, pm);
     }
