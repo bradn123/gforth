@@ -4,6 +4,7 @@
 #include "nacl-mounts/base/UrlLoaderJob.h"
 #include "nacl-mounts/console/JSPipeMount.h"
 #include "nacl-mounts/console/JSPostMessageBridge.h"
+#include "nacl-mounts/pepper/PepperMount.h"
 
 
 //#define USE_PSEUDO_THREADS
@@ -82,6 +83,14 @@ class GforthInstance : public pp::Instance {
     assert(fd == 1);
     fd = open("/jspipe/2", O_WRONLY);
     assert(fd == 2);
+
+    // Mount local storage.
+    {
+      mkdir("/save");
+      PepperMount* pm = new PepperMount(runner_, fs_, 100 * 1024 * 1024);
+      pm->SetPathPrefix("/save");
+      mount(0, "/save", 0, 0, pm);
+    }
 
 #ifdef USE_PSEUDO_THREADS
     runner_->PseudoThreadFork(gforth_init, runner_);
