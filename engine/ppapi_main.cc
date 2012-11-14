@@ -84,15 +84,16 @@ class GforthInstance : public pp::Instance {
     fd = open("/jspipe/2", O_WRONLY);
     assert(fd == 2);
 
+#if 0
     // Mount local storage.
     {
-      mkdir("/save", 0777);
       pp::FileSystem *fs = new pp::FileSystem(
           this, PP_FILESYSTEMTYPE_LOCALPERSISTENT);
-      PepperMount* pm = new PepperMount(runner_, fs, 100 * 1024 * 1024);
+      PepperMount* pm = new PepperMount(runner_, fs, 20 * 1024 * 1024);
       pm->SetPathPrefix("/save");
       mount(0, "/save", 0, 0, pm);
     }
+#endif
 
 #ifdef USE_PSEUDO_THREADS
     runner_->PseudoThreadFork(gforth_init, runner_);
