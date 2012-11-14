@@ -17,39 +17,6 @@ extern "C" int mount(const char *source, const char *target,
 extern "C" int simple_tar_extract(const char *path);
 
 
-static void Download(MainThreadRunner* runner,
-                     const char *url, const char *filename) {
-  UrlLoaderJob* job = new UrlLoaderJob;
-  job->set_url(url);
-  std::vector<char> data;
-  job->set_dst(&data);
-  runner->RunJob(job);
-  int fh = open(filename, O_CREAT | O_WRONLY);
-  write(fh, &data[0], data.size());
-  close(fh);
-}
-
-
-static void *gforth_init(void *arg) {
-  MainThreadRunner* runner = reinterpret_cast<MainThreadRunner*>(arg);
-
-  chdir("/");
-#if NACL_BITS == 32
-  Download(runner, "gforth32.tar", "/gforth.tar");
-#elif NACL_BITS == 64
-  Download(runner, "gforth64.tar", "/gforth.tar");
-#else
-# error "Bad NACL_BITS value"
-#endif
-  simple_tar_extract("/gforth.tar");
-
-  setenv("OUTSIDE_BROWSER", "1", 1);
-  const char *argv[] = {"gforth"};
-  main(1, const_cast<char**>(argv));
-  return 0;
-}
-
-
 class GforthInstance : public pp::Instance {
  public:
   explicit GforthInstance(PP_Instance instance) : pp::Instance(instance) {
@@ -64,6 +31,7 @@ class GforthInstance : public pp::Instance {
   }
 
   virtual bool Init(uint32_t argc, const char* argn[], const char* argv[]) {
+    fs_ = new pp::FileSystem(this, PP_FILESYSTEMTYPE_LOCALPERSISTENT);
     runner_ = new MainThreadRunner(this);
     jsbridge_ = new JSPostMessageBridge(runner_);
     jspipe_ = new JSPipeMount();
@@ -84,21 +52,10 @@ class GforthInstance : public pp::Instance {
     fd = open("/jspipe/2", O_WRONLY);
     assert(fd == 2);
 
-#if 0
-    // Mount local storage.
-    {
-      pp::FileSystem *fs = new pp::FileSystem(
-          this, PP_FILESYSTEMTYPE_LOCALPERSISTENT);
-      PepperMount* pm = new PepperMount(runner_, fs, 20 * 1024 * 1024);
-      pm->SetPathPrefix("/save");
-      mount(0, "/save", 0, 0, pm);
-    }
-#endif
-
 #ifdef USE_PSEUDO_THREADS
-    runner_->PseudoThreadFork(gforth_init, runner_);
+    runner_->PseudoThreadFork(RunThread, this);
 #else
-    pthread_create(&gforth_thread_, NULL, gforth_init, runner_);
+    pthread_create(&gforth_thread_, NULL, RunThread, this);
 #endif
 
     return true;
@@ -114,6 +71,46 @@ class GforthInstance : public pp::Instance {
   JSPipeMount* jspipe_;
   JSPostMessageBridge* jsbridge_;
   MainThreadRunner* runner_;
+  pp::FileSystem *fs_;
+
+  static void *RunThread(void *arg) {
+    GforthInstance *inst = static_cast<GforthInstance*>(arg);
+    inst->Run();
+    return 0;
+  }
+
+  void Download(const char *url, const char *filename) {
+    UrlLoaderJob* job = new UrlLoaderJob;
+    job->set_url(url);
+    std::vector<char> data;
+    job->set_dst(&data);
+    runner_->RunJob(job);
+    int fh = open(filename, O_CREAT | O_WRONLY);
+    write(fh, &data[0], data.size());
+    close(fh);
+  }
+
+  void Run() {
+    // Mount local storage.
+    {
+      PepperMount* pm = new PepperMount(runner_, fs_, 20 * 1024 * 1024);
+      mount(0, "/save", 0, 0, pm);
+    }
+
+    chdir("/");
+#if NACL_BITS == 32
+    Download("gforth32.tar", "/gforth.tar");
+#elif NACL_BITS == 64
+    Download("gforth64.tar", "/gforth.tar");
+#else
+# error "Bad NACL_BITS value"
+#endif
+    simple_tar_extract("/gforth.tar");
+
+    setenv("OUTSIDE_BROWSER", "1", 1);
+    const char *argv[] = {"gforth"};
+    main(1, const_cast<char**>(argv));
+  }
 };
 
 
