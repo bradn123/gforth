@@ -3,48 +3,22 @@
 set -e
 set -x
 
-export NACL_SDK_ROOT=~/nacl_sdk/pepper_21
-export NACL_SDK_BIN=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/bin
-export NACL_TOOLS=${NACL_SDK_ROOT}/tools
-export NACL_SDK_LIB_BASE=${NACL_SDK_ROOT}/toolchain/linux_x86_glibc/x86_64-nacl/lib
-export SRC_DIR="$(pwd)"
-export TARGET_RUN="${SRC_DIR}/nacl/nacl_run "
-
-
-function conf() {
-  export BITS=$1
-  export ARCH=$2
-
-  export NACL_SDK_LIB=${NACL_SDK_LIB_BASE}${BITS}
-  export NACL_SEL_LDR=${NACL_TOOLS}/sel_ldr_x86_${BITS}
-  export NACL_IRT=${NACL_TOOLS}/irt_x86_${BITS}.nexe
-
-  mkdir -p out/obj${BITS}
-  cd out/obj${BITS}
-  ../conf/configure \
-      --srcdir=${SRC_DIR} \
-      --host=${ARCH}-nacl \
-      CC="${NACL_SDK_BIN}/${ARCH}-nacl-gcc -DNACL_BITS=${BITS}"
-  cd ${SRC_DIR}
-}
+. nacl/nacl_setup.sh
 
 function main() {
   rm -rf out
   mkdir out
 
-  # Regen autoconf.
-  mkdir out/conf
-  mkdir out/conf/engine
-  cp *.in out/conf
-  cp autogen.sh out/conf
-  cd out/conf
-  ./autogen.sh
-  cd ../..
+  genconfig
 
-  conf 32 i686
+  forbits 32
+  config
   make -C out/obj32
-  conf 64 x86_64
+
+  forbits 64
+  config
   make -C out/obj64
+
   mkdir -p out/publish
   cp out/obj32/gforth.nexe out/publish/gforth_x86_32.nexe
   cp out/obj64/gforth.nexe out/publish/gforth_x86_64.nexe
