@@ -1005,19 +1005,20 @@ doc:		gforth.fi info doc/gforth doc/vmgen doc/gforth.ps doc/vmgen.ps doc/gforth.
 # For an explanation of the following Makefile rules, see node
 # `Automatic Remaking' in GNU Autoconf documentation.
 
+# TODO: Fix?, turned off to allow out of directory autogen.sh
 #Note: no target "$(srcdir)/configure", because that does not trigger 
 #unless $(srcdir)!="."
-configure: configure.in aclocal.m4
-	cd $(srcdir) && autoconf
+#configure: configure.in aclocal.m4
+#	cd $(srcdir) && autoconf
 
-aclocal.m4:	configure.in
-		aclocal
+#aclocal.m4:	configure.in
+#		aclocal
 
 # autoheader might not change config.h.in, so touch a stamp file.
-engine/config.h.in: stamp-h.in
-stamp-h.in: configure.in aclocal.m4
-	cd $(srcdir) && autoheader
-	echo timestamp > $(srcdir)/stamp-h.in
+#engine/config.h.in: stamp-h.in
+#stamp-h.in: configure.in aclocal.m4
+#	cd $(srcdir) && autoheader
+#	echo timestamp > $(srcdir)/stamp-h.in
 
 engine/config.h: stamp-h
 stamp-h: engine/config.h.in config.status stamp-h.in

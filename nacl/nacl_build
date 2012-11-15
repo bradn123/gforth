@@ -21,7 +21,8 @@ function conf() {
 
   mkdir -p out/obj${BITS}
   cd out/obj${BITS}
-  ${SRC_DIR}/configure \
+  ../conf/configure \
+      --srcdir=${SRC_DIR} \
       --host=${ARCH}-nacl \
       CC="${NACL_SDK_BIN}/${ARCH}-nacl-gcc -DNACL_BITS=${BITS}"
   cd ${SRC_DIR}
@@ -29,7 +30,17 @@ function conf() {
 
 function main() {
   rm -rf out
+  mkdir out
+
+  # Regen autoconf.
+  mkdir out/conf
+  mkdir out/conf/engine
+  cp *.in out/conf
+  cp autogen.sh out/conf
+  cd out/conf
   ./autogen.sh
+  cd ../..
+
   conf 32 i686
   make -C out/obj32
   conf 64 x86_64
